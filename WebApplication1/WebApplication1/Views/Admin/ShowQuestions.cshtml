@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "ShowQuestions";
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+@*@model dynamic*@
+
+<!-- Main row -->
+<div class="row" style="margin-top:8px">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th colspan="7">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="checkALl">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Tất cả
+                        </label>
+                    </div>
+                </th>
+
+                <th scope="col">
+                    <div class="float-sm-right">Hành động</div>
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+
+        <!--@foreach (var item in Model.list_qs)
+        {
+            <tbody>
+                <tr style="font-size:15px;background-color: #f9f9f9;">
+                    <th>
+                        <div class="form-check" style="width:20px;">
+                            <input class="form-check-input" type="checkbox" value="" id="@item.ID_Cauhoi" name="check_qs"
+                                   onclick="checkIdQt('@item.ID_Cauhoi')">-->
+                            @*<label class="form-check-label" for="defaultCheck1">*@
+
+                            @*</label>*@
+                        <!--</div>
+                    </th>
+                    <th scope="col">Danh mục: @item.NameDM</th>
+                    <th scope="col">Môn thi: @item.Name_MT</th>
+                    <th scope="col">Loai: @item.NameDM</th>
+                    <th scope="col">Mức độ: @item.Level_Question</th>
+                    <th scope="col">Trạng thái:@item.Status </th>
+                    <th scope="col">Người tạo:binhn2 </th>
+                    <th scope="col">
+                        <button id="btnGroupDrop1" type="button"
+                                class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                style="background-color: #e9ecef">
+                            Hành động
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                            <button class="dropdown-item"><a href="/Admin/HandleEdit?id_question=@item.ID_Cauhoi">Sửa</a></button>
+                            @if (item.Status == "Đã duyệt")
+                            {
+                                <button id="status01" class="dropdown-item" onclick="duyet_ch(0,'@item.ID_Cauhoi')">Bỏ duyệt</button>
+
+                            }
+                            else
+                            {
+                                <button id="status01" class="dropdown-item" onclick="duyet_ch(1,'@item.ID_Cauhoi')">Duyệt</button>
+                            }
+
+                            <button class="dropdown-item" onclick="DeletedQuestion('@item.ID_Cauhoi')">Xóa</button>
+                        </div>
+                    </th>
+                </tr>
+            </tbody>
+
+            <tbody>
+                <tr>
+                    <td colspan="8" style="font-size:15px">@item.Content_QS</td>
+                </tr>
+                @foreach (var test in Model.list_as)
+                {
+                    if (@test.ID_Cauhoi == @item.ID_Cauhoi)
+                    {
+
+                        <tr style="border:0px">
+
+
+                            <td colspan="8">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS">
+                                    <label class="form-check-label" for="exampleRadios1" style="font-size:12px">
+                                        @test.Content_AS
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    }
+
+                }
+
+
+
+            </tbody>
+
+
+        }-->
+    </table>
+</div>
+<!-- /.row (main row) -->

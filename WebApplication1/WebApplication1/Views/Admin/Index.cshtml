@@ -1,0 +1,821 @@
+﻿
+@{
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Template.cshtml";
+}
+
+@model dynamic
+@{
+    if (Model.search == 0)
+    {
+        <div class="content-wrapper" style=" background-color: white; ">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+
+                            <ol class="breadcrumb float-sm-left">
+
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">
+                                    <a href="/Admin">Quản lí câu hỏi</a>
+                                </li>
+                            </ol>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+
+
+
+                                
+                                <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Thêm Mới</button>
+
+
+                                <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hành động
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <button class="dropdown-item" onclick="updateStatus(1)"><i class="fa fa-check mr-2"></i>Duyệt tất cả</button>
+                                    <button class="dropdown-item" onclick="updateStatus(0)"><i class="fa fa-times mr-2"></i>Bỏ duyệt tất cả</button>
+                                    <button class="dropdown-item" onclick="DeleteAll()"><i class="fa fa-trash mr-2"></i>Xóa tất cả</button>
+                                    <a class="dropdown-item" href="/Home/ImportExcel"><i class="far fa-file-excel mr-2"></i>Nhập Excel</a>
+                                    <button class="dropdown-item" onclick="ExportExcel()"><i class="far fa-file-excel mr-2"></i>Xuất Excel</button>
+
+                                </div>
+
+                                <!--test-->
+                                <!-- The Modal -->
+                                <div class="modal" id="myModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Chọn loại câu hỏi</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <select class="custom-select" id="inputGroupSelect01">
+
+                                                    @foreach (var item in Model.list_typeQuestion)
+                                                    {
+                                                        <option value="@item.ID_Type">@item.Name_Type</option>
+                                                    }
+
+                                                </select>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" style="color:white;" id="linkA"
+                                                        onclick="handleAdd()">
+                                                    <i class="fa fa-plus"></i>Thêm Mới
+
+
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--test-->
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div>
+                        <!-- Small boxes (Stat box) -->
+                        @{ Html.BeginForm("Index", "Admin");}
+                        <div class="row">
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <select class="custom-select" id="Dm01" name="Dm01">
+                                    <option value="0" selected>Danh Mục</option>
+                                    @foreach (var item in Model.list_dm)
+                                    {
+                                        <option value="@item.ID_DM">@item.NameDM</option>
+                                    }
+
+
+
+                                </select>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <select class="custom-select" id="Dv01" name="Dv01">
+                                    <option value="0" selected>Đơn Vị</option>
+                                    @foreach (var item in Model.list_dv)
+                                    {
+                                        <option value="@item.ID_DV">@item.NameDV</option>
+                                    }
+
+
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <select class="custom-select" id="Mt01" name="Mt01">
+                                    <option value="0" selected>Môn Thi</option>
+                                    @foreach (var item in Model.list_mt)
+                                    {
+                                        <option value="@item.ID_MT">@item.Name_MT</option>
+                                    }
+
+
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <select class="custom-select" id="TypeQT01" name="TypeQT01">
+                                    <option value="0" selected>Tất Cả</option>
+                                    @foreach (var item in Model.list_typeQuestion)
+                                    {
+                                        <option value="@item.ID_Type">@item.Name_Type</option>
+                                    }
+
+
+
+                                </select>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.row -->
+                        <!-- Small boxes (Stat box) -->
+                        <div class="row" style="margin-top:15px">
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <input id="datepicker1" name="datepicker1" readonly="true" placeholder="Từ Ngày (dd/mm/yyyy)" />
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <input id="datepicker2" name="datepicker2" readonly="true" placeholder="Đến Ngày (dd/mm/yyyy)" />
+                            </div>
+
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <select class="custom-select" id="Status01" name="Status01">
+                                    <option value="-1" selected>Trạng thái</option>
+                                    <option value="1">Đã duyệt</option>
+                                    <option value="0">Chưa duyệt</option>
+
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="row">
+
+                                    <div class="col-6">
+                                        <input placeholder="Người tạo" class="form-control" readonly="readonly" />
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-search "></i>Tìm kiếm</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <!-- ./col -->
+                        </div>
+                        @{ Html.EndForm();}
+                        <!-- /.row -->
+                    </div>
+                    <!-- Main row -->
+                    <div class="row" style="margin-top:8px" id="showquestion1">
+                        <table class="table" id="showquestion2">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th colspan="7">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="checkALl">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Tất cả
+                                            </label>
+                                        </div>
+                                    </th>
+
+                                    <th scope="col">
+                                        <div class="float-sm-right">Hành động</div>
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+
+                            @foreach (var item in Model.list_qs)
+                            {
+                                <tbody>
+                                    <tr style="font-size:15px;background-color: #f9f9f9;">
+                                        <th>
+                                            <div class="form-check" style="width:20px;">
+                                                <input class="form-check-input" type="checkbox" value="" id="@item.ID_Cauhoi" name="check_qs"
+                                                       onclick="checkIdQt('@item.ID_Cauhoi')">
+                                                <label class="form-check-label" for="defaultCheck1">
+
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th scope="col">Danh mục: @item.NameDM</th>
+                                        <th scope="col">Môn thi: @item.Name_MT</th>
+                                        <th scope="col">Loại: @item.NameDM</th>
+                                        <th scope="col">Mức độ: @item.Level_Question</th>
+                                        <th scope="col">Trạng thái:@item.Status </th>
+                                        <th scope="col">Người tạo:binhn2 </th>
+                                        <th scope="col">
+                                            <button id="btnGroupDrop1" type="button"
+                                                    class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    style="background-color: #e9ecef">
+                                                Hành động
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                                                <a href="/Admin/HandleEdit?id_question=@item.ID_Cauhoi" class="dropdown-item">Sửa</a>
+                                                @if (item.Status == "Đã duyệt")
+                                                {
+                                                    <button id="status01" class="dropdown-item" onclick="duyet_ch(0,'@item.ID_Cauhoi')">Bỏ duyệt</button>
+
+                                                }
+                                                else
+                                                {
+                                                    <button id="status01" class="dropdown-item" onclick="duyet_ch(1,'@item.ID_Cauhoi')">Duyệt</button>
+                                                }
+
+                                                <button class="dropdown-item" onclick="DeletedQuestion('@item.ID_Cauhoi')">Xóa</button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </tbody>
+
+                                <tbody>
+                                    <tr>
+                                        <td colspan="8" style="font-size:15px">@Html.Raw(@item.Content_QS)</td>
+                                    </tr>
+                                    @foreach (var test in Model.list_as)
+                                    {
+                                        if (@test.ID_Cauhoi == @item.ID_Cauhoi)
+                                        {
+
+                                            <tr style="border:0px">
+
+
+                                                <td colspan="8">
+                                                    <div class="form-check">
+                                                        @if (item.TypeQuestion == 1)
+                                                        {
+                                                            if (@test.ID_TypesAs == 1)
+                                                            {
+                                                                <input class="form-check-input" type="radio" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS" checked readonly="readonly" disabled>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="form-check-input" type="radio" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS" readonly="readonly" disabled>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (@test.ID_TypesAs == 1)
+                                                            {
+                                                                <input class="form-check-input" type="checkbox" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS" checked readonly="readonly" disabled>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="form-check-input" type="checkbox" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS" readonly="readonly" disabled>
+                                                            }
+                                                        }
+
+
+                                                        <label class="form-check-label" for="exampleRadios1" style="font-size:12px">
+                                                            @Html.Raw(@test.Content_AS)
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                        }
+
+                                    }
+
+
+
+                                </tbody>
+
+
+                            }
+                        </table>
+                    </div>
+                    <!-- /.row (main row) -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="float-sm-left edit_size">Tổng số bản ghi: @ViewBag.totalPage</p>
+                            </div>
+                            <div class="col-6">
+                                <ul class="pagination float-sm-right">
+
+                                    @{
+                                        int position;
+                                        int pageCurrent = ViewBag.pageCurrent;
+
+                                        float numSize = ViewBag.numSize;
+
+                                        if (pageCurrent > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("/Index", new { page = pageCurrent-1 })" tabindex="-1">Previous</a>
+                                            </li>
+                                        }
+
+                                        for (position = 1; position <= numSize; position++)
+                                        {
+
+                                            if (position == pageCurrent)
+                                            {
+                                                <li class="page-item active"><a class="page-link" href="@Url.Action("/Index", new { page = position })">@position</a></li>
+                                            }
+
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="@Url.Action("/Index", new {  page = position })">@position</a></li>
+                                            }
+
+                                        }
+                                        if (pageCurrent > 0 && pageCurrent < numSize)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("/Index", new {page = pageCurrent+1 })" tabindex="-1">Next</a>
+                                            </li>
+                                        }
+
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        @*</nav>*@
+                    </div>
+
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    }
+    else
+    {
+
+        int Dm01 = ViewBag.Dm01;
+        int Dv01 = ViewBag.Dv01;
+        int Mt01 = ViewBag.Mt01;
+        int TypeQT01 = ViewBag.TypeQT01;
+        int Status01 = ViewBag.Status01;
+
+
+        <div class="content-wrapper" style=" background-color: white; ">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+
+                            <ol class="breadcrumb float-sm-left">
+
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active"><a href="/Admin">Quản lí câu hỏi</a></li>
+                            </ol>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+
+
+
+                                <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Thêm Mới</button>
+
+
+                                <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hành động
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <button class="dropdown-item" onclick="updateStatus(1)"><i class="fa fa-check mr-2"></i>Duyệt tất cả</button>
+                                    <button class="dropdown-item" onclick="updateStatus(0)"><i class="fa fa-times mr-2"></i>Bỏ duyệt tất cả</button>
+                                    <button class="dropdown-item" onclick="DeleteAll()"><i class="fa fa-trash mr-2"></i>Xóa tất cả</button>
+                                    <a class="dropdown-item" href="/Home/ImportExcel"><i class="far fa-file-excel mr-2"></i>Nhập Excel</a>
+                                    <button class="dropdown-item" onclick="ExportExcel()"><i class="far fa-file-excel mr-2"></i>Xuất Excel</button>
+
+                                </div>
+
+                                <!--test-->
+                                <!-- The Modal -->
+                                <div class="modal" id="myModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Chọn loại câu hỏi</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <select class="custom-select" id="inputGroupSelect01">
+
+                                                    @foreach (var item in Model.list_typeQuestion)
+                                                    {
+                                                        <option value="@item.ID_Type">@item.Name_Type</option>
+                                                    }
+
+                                                </select>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" style="color:white;" id="linkA"
+                                                        onclick="handleAdd()">
+                                                    <i class="fa fa-plus"></i>Thêm Mới
+
+
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--test-->
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div>
+                        <!-- Small boxes (Stat box) -->
+                        @{ Html.BeginForm("Index", "Admin");}
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                <select class="custom-select" id="Dm01" name="Dm01">
+                                    <option value="0">Danh Mục</option>
+                                    @foreach (var item in Model.list_dm)
+                                    {
+                                        if (ViewBag.Dm01 == item.ID_DM)
+                                        {
+                                            <option value="@item.ID_DM" selected>@item.NameDM</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ID_DM">@item.NameDM</option>
+                                        }
+
+                                    }
+
+
+
+                                </select>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                <select class="custom-select" id="Dv01" name="Dv01">
+                                    <option value="0">Đơn Vị</option>
+                                    @foreach (var item in Model.list_dv)
+                                    {
+                                        if (ViewBag.Dv01 == item.ID_DV)
+                                        {
+                                            <option value="@item.ID_DV" selected>@item.NameDV</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ID_DV">@item.NameDV</option>
+                                        }
+
+
+                                    }
+
+
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                <select class="custom-select" id="Mt01" name="Mt01">
+                                    <option value="0">Môn Thi</option>
+                                    @foreach (var item in Model.list_mt)
+                                    {
+                                        if (ViewBag.Mt01 == item.ID_MT)
+                                        {
+                                            <option value="@item.ID_MT" selected>@item.Name_MT</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ID_MT">@item.Name_MT</option>
+                                        }
+
+                                    }
+
+
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                <select class="custom-select" id="TypeQT01" name="TypeQT01">
+                                    <option value="0">Tất Cả</option>
+                                    @foreach (var item in Model.list_typeQuestion)
+                                    {
+                                        if (ViewBag.TypeQT01 == item.ID_Type)
+                                        {
+                                            <option value="@item.ID_Type" selected>@item.Name_Type</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ID_Type">@item.Name_Type</option>
+                                        }
+
+                                    }
+
+
+
+                                </select>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.row -->
+                        <!-- Small boxes (Stat box) -->
+                        <div class="row" style="margin-top:15px">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                @if (ViewBag.startDate != null)
+                                {
+                                    <input id="datepicker1" name="datepicker1" readonly="true" value="@ViewBag.startDate" />
+                                }
+                                else
+                                {
+                                    <input id="datepicker1" name="datepicker1" readonly="true" placeholder="Từ Ngày(dd/mm/yyyy)" />
+                                }
+
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                @if (ViewBag.endDate != null)
+                                {
+                                    <input id="datepicker2" name="datepicker2" readonly="true" value="@ViewBag.endDate" />
+                                }
+                                else
+                                {
+                                    <input id="datepicker2" name="datepicker2" readonly="true" placeholder="Đến Ngày(dd/mm/yyyy)" />
+                                }
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                <select class="custom-select" id="Status01" name="Status01">
+
+                                    @foreach (var item in Model.list_status)
+                                    {
+                                        if (ViewBag.Status01 == item.ID)
+                                        {
+                                            <option value="@item.ID" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+
+                                    }
+
+
+
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <!-- small box -->
+                                <div class="row">
+
+                                    <div class="col-6">
+                                        <input placeholder="Người tạo" class="form-control" readonly="readonly" />
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-search "></i>Tìm kiếm</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <!-- ./col -->
+                        </div>
+                        @{ Html.EndForm();}
+                        <!-- /.row -->
+                    </div>
+                    <!-- Main row -->
+                    <div class="row" style="margin-top:8px" id="showquestion1">
+                        <table class="table" id="showquestion2">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th colspan="7">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="checkALl">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Tất cả
+                                            </label>
+                                        </div>
+                                    </th>
+
+                                    <th scope="col">
+                                        <div class="float-sm-right">Hành động</div>
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+
+                            @foreach (var item in Model.list_qs)
+                            {
+                                <tbody>
+                                    <tr style="font-size:15px;background-color: #f9f9f9;">
+                                        <th>
+                                            <div class="form-check" style="width:20px;">
+                                                <input class="form-check-input" type="checkbox" value="" id="@item.ID_Cauhoi" name="check_qs"
+                                                       onclick="checkIdQt('@item.ID_Cauhoi')">
+                                                <label class="form-check-label" for="defaultCheck1">
+
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th scope="col">Danh mục: @item.NameDM</th>
+                                        <th scope="col">Môn thi: @item.Name_MT</th>
+                                        <th scope="col">Loại: @item.NameDM</th>
+                                        <th scope="col">Mức độ: @item.Level_Question</th>
+                                        <th scope="col">Trạng thái:@item.Status </th>
+                                        <th scope="col">Người tạo:binhn2 </th>
+                                        <th scope="col">
+                                            <button id="btnGroupDrop1" type="button"
+                                                    class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    style="background-color: #e9ecef">
+                                                Hành động
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                                                <a href="/Admin/HandleEdit?id_question=@item.ID_Cauhoi" class="dropdown-item">Sửa</a>
+                                                @if (item.Status == "Đã duyệt")
+                                                {
+                                                    <button id="status01" class="dropdown-item" onclick="duyet_ch(0,'@item.ID_Cauhoi')">Bỏ duyệt</button>
+
+                                                }
+                                                else
+                                                {
+                                                    <button id="status01" class="dropdown-item" onclick="duyet_ch(1,'@item.ID_Cauhoi')">Duyệt</button>
+                                                }
+
+                                                <button class="dropdown-item" onclick="DeletedQuestion('@item.ID_Cauhoi')">Xóa</button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </tbody>
+
+                                <tbody>
+                                    <tr>
+                                        <td colspan="8" style="font-size:15px">@Html.Raw(@item.Content_QS)</td>
+                                    </tr>
+                                    @foreach (var test in Model.list_as)
+                                    {
+                                        if (@test.ID_Cauhoi == @item.ID_Cauhoi)
+                                        {
+
+                                            <tr style="border:0px">
+
+
+                                                <td colspan="8">
+                                                    <div class="form-check">
+                                                        @if (@test.ID_TypesAs == 1)
+                                                        {
+                                                            <input class="form-check-input" type="radio" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS" checked readonly="readonly" disabled>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="form-check-input" type="radio" name="exampleRadios{@test.ID_AS}" id="@test.ID_AS" value="@test.ID_AS" readonly="readonly" disabled>
+                                                        }
+
+                                                        <label class="form-check-label" for="exampleRadios1" style="font-size:12px">
+                                                            @Html.Raw(@test.Content_AS)
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                        }
+
+                                    }
+
+
+
+                                </tbody>
+
+
+                            }
+                        </table>
+                    </div>
+                    <!-- /.row (main row) -->
+                    <div style="" class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="float-sm-left edit_size">Tổng số bản ghi:@ViewBag.totalPage</p>
+                            </div>
+
+                            <div class="col-6">
+                                <ul class="pagination  float-sm-right">
+
+                                    @{
+                                        int position;
+                                        int pageCurrent = ViewBag.pageCurrent;
+
+                                        float numSize = ViewBag.numSize;
+
+                                        if (pageCurrent > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("/Index", new {Dm01=Dm01,Dv01=Dv01,Mt01=Mt01,TypeQT01=TypeQT01,
+                                                                  Status01=Status01,datepicker2=ViewBag.endDate,datepicker1=ViewBag.startDate,page = pageCurrent-1 })" tabindex="-1">Previous</a>
+                                            </li>
+                                        }
+
+                                        for (position = 1; position <= numSize; position++)
+                                        {
+
+                                            if (position == pageCurrent)
+                                            {
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="@Url.Action("/Index", new {Dm01=Dm01,Dv01=Dv01,Mt01=Mt01,TypeQT01=TypeQT01,
+                                                                  Status01=Status01,datepicker2=ViewBag.endDate,datepicker1=ViewBag.startDate, page = position })">@position</a>
+                                                            </li>
+                                                        }
+
+                                                        else
+                                                        {
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="@Url.Action("/Index", new { Dm01=Dm01,Dv01=Dv01,Mt01=Mt01,TypeQT01=TypeQT01,
+                                                                  Status01=Status01,datepicker2=ViewBag.endDate,datepicker1=ViewBag.startDate, page = position })">@position</a>
+                                                            </li>
+                                                        }
+
+                                                    }
+                                                    if (pageCurrent > 0 && pageCurrent < numSize)
+                                                    {
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="@Url.Action("/Index", new {Dm01=Dm01,Dv01=Dv01,Mt01=Mt01,TypeQT01=TypeQT01,
+                                                                  Status01=Status01,datepicker2=ViewBag.endDate,datepicker1=ViewBag.startDate,page = pageCurrent+1 })" tabindex="-1">Next</a>
+                                                        </li>
+                                                    }
+
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                        @*<nav aria-label="Page navigation example">*@
+                        
+                        @*</nav>*@
+                    </div>
+
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    }
+}
+
+
+<script src="~/Scripts/Customize/HandleIndex.js"></script>

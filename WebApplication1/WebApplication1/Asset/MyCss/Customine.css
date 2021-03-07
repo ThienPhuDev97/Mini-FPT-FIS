@@ -1,0 +1,9 @@
+﻿.edit_size {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 800;
+}
+.showError {
+    color: red;
+    margin-left: 5px
+}

@@ -1,0 +1,329 @@
+﻿
+@{
+    ViewBag.Title = "AddQuestion";
+    Layout = "~/Views/Shared/Template.cshtml";
+}
+@model dynamic
+<div class="content-wrapper" style=" background-color: white; ">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2 mt-15">
+                <div class="col-sm-6">
+
+                    <ol class="breadcrumb float-sm-left edit2">
+
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Quản lí câu hỏi</li>
+                        <li class="breadcrumb-item active">@Model.loai_ch.Name_type</li>
+                    </ol>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <button type="button" class="btn btn-light">
+                            <a href="~/Admin">
+                                <i class="fa fa-reply"></i>Quay lại
+                            </a>
+                        </button>
+
+                        <!--test-->
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Chọn loại câu hỏi</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success">
+                                            <a href="/Admin/AddQuestion" style="color:white;">Thêm Mới</a>
+
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--test-->
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            <hr / style="width:100%;border:2px solid #d2d6de">
+            <div class="container-fluid">
+                @using (Html.BeginForm("AddData", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formdata" }))
+                {
+                    @*<form method="post" action="/Admin/AddData" enctype="multipart/form-data">*@
+                    @Html.AntiForgeryToken()
+
+                    <div class="row" style="display:none">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <input value="@Model.idtype" class="form-control input-icon valid" id="maloaich" name="maloaich" type="text" readonly aria-required="true" aria-invalid="false" aria-describedby="CodeQuestion-error" required>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <input value="@Model.loai_ch.Name_type" class="form-control input-icon valid" id="tenloaich" name="tenloaich" type="text" readonly aria-required="true" aria-invalid="false" aria-describedby="CodeQuestion-error" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Mã câu hỏi &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <input class="form-control input-icon valid" id="codequestion" name="mch" placeholder="Mã câu hỏi" type="text" readonly aria-required="true" aria-invalid="false" aria-describedby="CodeQuestion-error" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Danh mục &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+
+                            <div>
+                                <div>
+                                    <select class="custom-select" id="namedm" name="namedm">
+
+                                        @foreach (var item in Model.list_dm)
+                                        {
+                                            <option value="@item.ID_DM">@item.NameDM</option>
+                                        }
+
+
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Đơn vị &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <select class="custom-select" id="namedv" name="namedv">
+
+                                @foreach (var item in Model.list_dv)
+                                {
+                                    <option value="@item.ID_DV">@item.NameDV</option>
+                                }
+
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Môn thi &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <select class="custom-select" id="namemt" name="namemt">
+
+                                @foreach (var item in Model.list_mt)
+                                {
+                                    <option value="@item.ID_MT">@item.Name_MT</option>
+                                }
+
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Nội dung câu hỏi &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+
+                            <textarea name="description" id="description" rows="10" cols="80" required></textarea>
+                            <script language="javascript">
+                                CKEDITOR.replace("description", {
+                                    entities_latin: false,
+                                    entities_greek: false
+                                } );
+                            </script>
+                            <span id="error_question" style="color:red; margin-left:5px"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right"  style="padding:15px;">Upload File &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <div class="row">
+
+                                <div class="col-lg-4" style="position: relative">
+                                    <input type="file" id="uploadfile" name="uploadfile" class="form-control"
+                                           style="border: none;overflow: hidden;" onchange="ChooseFile()">
+
+
+                                </div>
+                                <div class="col-lg-8">
+                                    <button type="button" id="upload1" value="UploadFile" onclick="xuliUpfile()" class="btn green"
+                                            style=" color: #fff; background-color: #35aa47; border-color: #35aa47;margin-left: 15px;">
+                                        <i class="fas fa-upload"></i>UploadFile
+                                    </button>
+                                </div>
+                             
+
+                            </div>
+
+                            <span id="error_file" style="color:red; margin-left:5px"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Link Video &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+
+                            <input type="text" id="linkvideo" name="linkvideo" class="form-control col-sm-9">
+                            <span id="error_linkvideo" style="color:red; margin-left:5px"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Mức độ &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <select class="custom-select" id="levelquestion">
+                                <option value="1">Dễ</option>
+                                <option value="2">Khó</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Ngày hết hạn &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <input id="datepicker" width="276" required name="enddate" placeholder="dd-mm-yyyy" readonly="true" data-date-format="DD MMMM YYYY" />
+
+                            <span id="error_date" style="color:red; margin-left:5px"></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Nội dung câu trả lời &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+
+                            <textarea name="cautl" id="cautl" rows="10" cols="80" required></textarea>
+                            <script language="javascript">
+                                CKEDITOR.replace("cautl", {
+                                    entities_latin: false,
+                                    entities_greek: false
+                                });
+                            </script>
+                            <span id="error_answer" style="color:red; margin-left:5px"></span>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Giải thích &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+
+                            <textarea name="explain" id="explain" rows="10" cols="80" required></textarea>
+                            <script language="javascript">
+                                CKEDITOR.replace("explain", {
+                                    entities_latin: false,
+                                    entities_greek: false
+                                });
+                            </script>
+                            <span id="error_explain" style="color:red; margin-left:5px"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3" style="border: 1px solid #d2d6de; border-top:none; ">
+                            <label class="float-sm-right" style="padding:15px;">Loại câu trả lời &nbsp; <span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border-top:none; border-left:none;padding-top:10px;">
+                            <select class="custom-select" id="type_qs" name="type_As" onchange="ChangeSelect2()">
+                                <option value="1">Một đáp án đúng</option>
+                                <option value="2">Nhiều đáp án đúng</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style=" border:none">
+
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border:none;padding-top:10px;">
+                            <button type="button" class="btn btn-success" onclick="handleAddAnswer()" id="txtAddAs">Thêm câu trả lời</button>
+                            <span id="showerror" style="color:red; margin-left:5px"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" style=" border:none">
+
+                        </div>
+                        <div class="col-sm-9" style="border: 1px solid #d2d6de; border:none;padding-top:10px;">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr class="row">
+                                        
+                                        <th scope="col" class="col-lg-2">ID</th>
+                                        <th scope="col" class="col-lg-4">Nội dung câu trả lời</th>
+                                        <th scope="col" class="col-lg-4">Giải thích</th>
+                                        <th scope="col" class="col-lg-2">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableAnswer">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                }
+                <div class="row">
+                    <div class="col-sm-3" style=" border:none">
+
+                    </div>
+                    <div class="col-sm-9" style="border: 1px solid #d2d6de; border:none;padding-top:10px;">
+                        <button type="button" class="btn btn-success" onclick="submit()" id="Button" form="">Cập nhật</button>
+                        <span id="showerrorSubmit" class="showError"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@*<script>
+    let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1);
+
+    $('#datepicker').datepicker({
+
+        uiLibrary: 'bootstrap4',
+        minDate: today,
+        format: 'dd-mm-yyyy'
+    });
+</script>*@
+<script src="~/Scripts/Customize/HandleAdd.js"></script>
+

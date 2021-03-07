@@ -1,0 +1,47 @@
+﻿.sidebarcss {
+    color: #4b646f;
+    padding: 0px 0px 10px 0px;
+    
+}.sizep{
+     font-size:15px;
+ }
+.small {
+    font-size: 15px;
+    display: inline-block;
+    padding-left: 4px;
+    font-weight: 300;
+}
+.edit_1{
+  color:white !important;
+}
+.edit2 {
+    background-color: #f7f7f7 !important;
+}
+.mt-15 {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+   
+}
+.bdr {
+    border: 1px solid #f7f7f7 !important;
+}
+#uploadfileupdate {
+    content:'Choose';
+}
+.fixText {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   
+    -webkit-line-clamp: 3;
+    
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.color1 {
+    color: #fafcfb;
+    background-color: #bfcad1;
+}
